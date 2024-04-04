@@ -1,9 +1,8 @@
-CODE_CHANGES = getGitchanges()
 pipeline{
     agent any
     parameters{
         choice(name: 'Version', choices: ['1.0.1','1.0.2','1.0.3'], description: '')
-        boolenParam(name: 'executeTest', defaultValue: true, description: '')
+        booleanParam(name: 'executeTest', defaultValue: true, description: '')
     }
     stages{
         stage("test"){
