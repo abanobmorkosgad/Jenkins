@@ -1,0 +1,33 @@
+pipeline{
+    agent none
+    stages{
+        stage("test"){
+            steps{
+                script{
+                    echo "testing"
+                    echo "executing pipeline for ${BRANCH_NAME} branch"
+                }
+            }
+        }
+        stage("build"){
+            when{
+                expression{
+                    BRANCH_NAME == "main"
+                }
+            }
+            steps{
+                script{
+                    echo "building"
+                    echo "executing pipeline for ${BRANCH_NAME} branch"
+                }
+            }
+        }
+        stage("deploy"){
+            steps{
+                script{
+                    echo "deploying"
+                }
+            }
+        }
+    }
+}
