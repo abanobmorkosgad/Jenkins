@@ -6,9 +6,9 @@ pipeline {
     }
 
     stages {
-        stage("init"){
-            steps{
-                script{
+        stage("init") {
+            steps {
+                script {
                     gv = load "script.groovy"
                 }
             }
@@ -24,7 +24,6 @@ pipeline {
             steps {
                 script {
                     gv.buildimage()
-                    }
                 }
             }
         }
@@ -36,5 +35,5 @@ pipeline {
             }
         }
     }
-
+}
 
