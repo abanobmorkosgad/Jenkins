@@ -43,7 +43,7 @@ pipeline{
             steps{
                 script{
                     gv.deploy()
-                    echo "deploying to ${Environment}"
+                    echo "deploying to ${params.Environment}"
                 }
             }
         }
