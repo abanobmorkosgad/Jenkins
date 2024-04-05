@@ -47,6 +47,23 @@ pipeline {
                 }
             }
         }
+        stage("commit to github"){
+            steps{
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                        sh "git config user.name 'abanobmorkosgad'"
+                        sh "git config user.gmail 'abanobmorkos13@gmail.com'"
+                        sh "git status"
+                        sh "git branch"
+                        sh "git checkout versioning"
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/abanobmorkosgad/Jenkins.git"
+                        sh "git add ."
+                        sh "git commit -m 'updating pom.xml'"
+                        sh "git push origin versioning"
+                    }
+                }
+            }
+        }
     }
 }
 
