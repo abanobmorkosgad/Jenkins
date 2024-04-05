@@ -51,8 +51,8 @@ pipeline {
             steps{
                 script{
                     withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh "git config user.name 'abanobmorkosgad'"
-                        sh "git config user.gmail 'abanobmorkos13@gmail.com'"
+                        sh 'git config --global user.name "jenkins"'
+                        sh 'git config --global user.gmail "jenkins@example.com"'
                         sh "git status"
                         sh "git branch"
                         sh "git checkout versioning"
