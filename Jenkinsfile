@@ -1,4 +1,5 @@
 def gv 
+
 pipeline {
     agent any
     tools {
@@ -6,9 +7,9 @@ pipeline {
     }
 
     stages {
-        stage("increment version"){
-            steps{
-                script{
+        stage("increment version") {
+            steps {
+                script {
                     echo "increment version..."
                     sh 'mvn build-helper:parse-version versions:set \
                         -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
@@ -35,6 +36,7 @@ pipeline {
                         sh "docker build -t abanobmorkos10/java-maven:${IMAGE_NAME} ."
                         sh "docker login -u $USER -p $PASS"
                         sh "docker push abanobmorkos10/java-maven:${IMAGE_NAME}"
+                    }
                 }
             }
         }
@@ -46,6 +48,5 @@ pipeline {
             }
         }
     }
-}
 }
 
