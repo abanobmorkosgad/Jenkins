@@ -53,7 +53,6 @@ pipeline {
                         sh 'git config --global user.email "abanobmorkos13@gmail.com"'
                         sh "git status"
                         sh "git branch"
-                        sh "git checkout versioning"
                         sh "git remote set-url origin https://${USER}:${PASS}@github.com/abanobmorkosgad/Jenkins.git"
                         sh "git add ."
                         sh "git commit -m 'updating pom.xml'"
