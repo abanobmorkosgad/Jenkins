@@ -27,7 +27,7 @@ pipeline {
         stage("build docker image") {
             steps {
                 script {
-                    buildImage()
+                    buildImage "abanobmorkos10/java-maven:3"
                 }
             }
         }
