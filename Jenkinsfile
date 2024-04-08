@@ -4,10 +4,6 @@ pipeline {
         maven "Maven-3.9"
     }
 
-    environment {
-        GITHUB_TOKEN = "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"
-    }
-
     stages {
         stage("increment version") {
             steps {
@@ -49,21 +45,19 @@ pipeline {
                 }
             }
         }
-        stage("commit to github") {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+        stage("commit to github"){
+            steps{
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS1', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh 'git config --global user.name "jenkins"'
                         sh 'git config --global user.email "abanobmorkos13@gmail.com"'
 
                         sh "git status"
                         sh "git branch"
 
-                        def token = env.GITHUB_TOKEN 
-                        def remoteUrl = "https://${USER}:${token}@github.com/abanobmorkosgad/Jenkins.git"
-                        sh "git remote set-url origin ${remoteUrl}"
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/abanobmorkosgad/Jenkins.git"
                         sh "git add ."
-                        sh 'git commit -m "ci: update pom and jar"'
+                        sh "git commit -m 'ci: update pom and jar'"
                         sh "git push origin HEAD:versioning"
                     }
                 }
@@ -71,4 +65,3 @@ pipeline {
         }
     }
 }
-
