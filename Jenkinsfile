@@ -48,7 +48,7 @@ pipeline {
         stage("commit to github"){
             steps{
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS1', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh 'git config --global user.name "jenkins"'
                         sh 'git config --global user.email "abanobmorkos13@gmail.com"'
 
