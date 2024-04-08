@@ -41,7 +41,14 @@ pipeline {
         stage("deploy") {
             steps {
                 script {
-                    echo "Deploying.."
+                    def dockerCommnad= "docker run -p 3080:3080 -d abanobmorkos10/java-maven:${IMAGE_NAME}"
+                    sshagent(['ec2-key']) {
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 sudo yum install -y docker"
+                        withCredentials([usernamePassword(credentialsId: 'DockerCred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 docker login -u $USER -p $PASS"
+                        }
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 ${dockerCommnad}"
+                    }
                 }
             }
         }
@@ -50,7 +57,7 @@ pipeline {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS1', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh 'git config --global user.name "jenkins"'
-                        sh 'git config --global user.email "abanobmorkos13@gmail.com"'
+                        sh 'git config --global user.email "jenkins@example.com"'
 
                         sh "git status"
                         sh "git branch"
