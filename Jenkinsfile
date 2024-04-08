@@ -41,7 +41,7 @@ pipeline {
         stage("deploy") {
             steps {
                 script {
-                    def dockerCommnad= "sudo docker run -p 3080:3080 -d abanobmorkos10/java-maven:${IMAGE_NAME}"
+                    def dockerCommnad= "sudo docker run -p 8080:8080 -d abanobmorkos10/java-maven:${IMAGE_NAME}"
                     sshagent(['ec2-key']) {
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 sudo yum install -y docker"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 sudo systemctl start docker"
