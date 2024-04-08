@@ -24,10 +24,12 @@ pipeline {
                 }
             }
         }
-        stage("build docker image") {
+        stage("build and push docker image") {
             steps {
                 script {
                     buildImage "abanobmorkos10/java-maven:3"
+                    dockerLogin()
+                    pushImage "abanobmorkos10/java-maven:3"
                 }
             }
         }
