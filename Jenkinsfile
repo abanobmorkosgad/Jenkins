@@ -51,11 +51,13 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh 'git config --global user.name "jenkins"'
                         sh 'git config --global user.email "abanobmorkos13@gmail.com"'
+
                         sh "git status"
                         sh "git branch"
+
                         sh "git remote set-url origin https://${USER}:${PASS}@github.com/abanobmorkosgad/Jenkins.git"
                         sh "git add ."
-                        sh "git commit -m 'updating pom.xml'"
+                        sh "git commit -m 'ci: update pom and jar'"
                         sh "git push origin HEAD:versioning"
                     }
                 }
