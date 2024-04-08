@@ -57,6 +57,7 @@ pipeline {
                         sh "git remote set-url origin https://${USER}:${PASS}@github.com/abanobmorkosgad/Jenkins.git"
                         sh "git add ."
                         sh "git commit -m 'updating pom.xml'"
+                        sh "git pull"
                         sh "git push origin HEAD:versioning"
                     }
                 }
