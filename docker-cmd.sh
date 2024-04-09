@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export IMAGE=abanobmorkos10/java-maven:1.1.12-25
+export IMAGE="abanobmorkos10/java-maven:1.1.12-25"
 echo $IMAGE
 # sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose
 # sudo mv docker-compose /usr/local/bin
