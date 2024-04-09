@@ -41,7 +41,7 @@ pipeline {
         stage("deploy") {
             steps {
                 script {
-                    def shellcmd="bash ./docker-cmd.sh"
+                    def shellcmd="bash ./docker-cmd.sh abanobmorkos10/java-maven:${IMAGE_NAME}"
                     sshagent(['ec2-key']) {
                         sh "scp docker-cmd.sh ec2-user@34.227.28.46:~"
                         sh "scp docker-compose.yaml ec2-user@34.227.28.46:~"
