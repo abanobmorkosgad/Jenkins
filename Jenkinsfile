@@ -41,35 +41,33 @@ pipeline {
         stage("deploy") {
             steps {
                 script {
-                    def dockerCommnad= "sudo docker run -p 8080:8080 -d abanobmorkos10/java-maven:${IMAGE_NAME}"
                     sshagent(['ec2-key']) {
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 sudo yum install -y docker"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 sudo systemctl start docker"
-                        withCredentials([usernamePassword(credentialsId: 'DockerCred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                            sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 sudo docker login -u $USER -p $PASS"
-                        }
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.233.225.26 ${dockerCommnad}"
+                        sh 'ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose"'
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo mv docker-compose /usr/local/bin && sudo chmod +x /usr/local/bin/docker-compose"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose"
+                        sh "scp docker-compose.yaml ec2-user@34.227.28.46:~"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo docker-compose -f docker-compose.yaml up --detach"
                     }
                 }
             }
         }
-        stage("commit to github"){
-            steps{
-                script{
-                    withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS1', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh 'git config --global user.name "jenkins"'
-                        sh 'git config --global user.email "jenkins@example.com"'
+        // stage("commit to github"){
+        //     steps{
+        //         script{
+        //             withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS1', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+        //                 sh 'git config --global user.name "jenkins"'
+        //                 sh 'git config --global user.email "jenkins@example.com"'
 
-                        sh "git status"
-                        sh "git branch"
+        //                 sh "git status"
+        //                 sh "git branch"
 
-                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/abanobmorkosgad/Jenkins.git"
-                        sh "git add ."
-                        sh "git commit -m 'ci: update pom and jar'"
-                        sh "git push origin HEAD:Deploy"
-                    }
-                }
-            }
-        }
+        //                 sh "git remote set-url origin https://${USER}:${PASS}@github.com/abanobmorkosgad/Jenkins.git"
+        //                 sh "git add ."
+        //                 sh "git commit -m 'ci: update pom and jar'"
+        //                 sh "git push origin HEAD:Deploy"
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
