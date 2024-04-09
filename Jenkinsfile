@@ -34,7 +34,7 @@ pipeline {
                         sh "docker build -t abanobmorkos10/java-maven:${IMAGE_NAME} ."
                         sh "docker login -u $USER -p $PASS"
                         sh "docker push abanobmorkos10/java-maven:${IMAGE_NAME}"
-                    }
+                    }  
                 }
             }
         }
