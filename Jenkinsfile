@@ -43,7 +43,8 @@ pipeline {
                 script {
                     sshagent(['ec2-key']) {
                         sh 'ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o docker-compose'
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo mv docker-compose /usr/local/bin && sudo chmod +x /usr/local/bin/docker-compose"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo mv docker-compose /usr/local/bin"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo chmod +x /usr/local/bin/docker-compose"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose"
                         sh "scp docker-compose.yaml ec2-user@34.227.28.46:~"
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@34.227.28.46 sudo docker-compose -f docker-compose.yaml up --detach"
