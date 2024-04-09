@@ -26,18 +26,18 @@ pipeline {
                 }
             }
         }
-        // stage("build docker image") {
-        //     steps {
-        //         script {
-        //             echo "Building docker image.."
-        //             withCredentials([usernamePassword(credentialsId: 'DockerCred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-        //                 sh "docker build -t abanobmorkos10/java-maven:${IMAGE_NAME} ."
-        //                 sh "docker login -u $USER -p $PASS"
-        //                 sh "docker push abanobmorkos10/java-maven:${IMAGE_NAME}"
-        //             }
-        //         }
-        //     }
-        // }
+        stage("build docker image") {
+            steps {
+                script {
+                    echo "Building docker image.."
+                    withCredentials([usernamePassword(credentialsId: 'DockerCred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                        sh "docker build -t abanobmorkos10/java-maven:${IMAGE_NAME} ."
+                        sh "docker login -u $USER -p $PASS"
+                        sh "docker push abanobmorkos10/java-maven:${IMAGE_NAME}"
+                    }
+                }
+            }
+        }
         stage("deploy") {
             steps {
                 script {
