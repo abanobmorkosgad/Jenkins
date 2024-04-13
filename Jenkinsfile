@@ -3,6 +3,9 @@ pipeline {
     tools {
         maven "Maven-3.9"
     }
+    environment{
+        aws_repo=339712792713.dkr.ecr.us-east-1.amazonaws.com/java-maven
+    }
 
     stages {
         stage("increment version") {
@@ -30,10 +33,10 @@ pipeline {
             steps {
                 script {
                     echo "Building docker image.."
-                    withCredentials([usernamePassword(credentialsId: 'DockerCred', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh "docker build -t abanobmorkos10/java-maven:${IMAGE_NAME} ."
-                        sh "docker login -u $USER -p $PASS"
-                        sh "docker push abanobmorkos10/java-maven:${IMAGE_NAME}"
+                    withCredentials([usernamePassword(credentialsId: 'aws_ecr', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                        sh "docker build -t ${aws_repo}:${IMAGE_NAME} ."
+                        sh "docker login -u $USER -p $PASS 339712792713.dkr.ecr.us-east-1.amazonaws.com"
+                        sh "docker push ${aws_repo}:${IMAGE_NAME}"
                     }
                 }
             }
