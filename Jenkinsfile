@@ -46,6 +46,7 @@ pipeline {
             steps {
                 script {
                     echo "Deploying.."
+                    sh "export K8S_AUTH_DEBUG=true"
                     sh "kubectl create deployment nginx-deployment --image=nginx"
                 }
             }
