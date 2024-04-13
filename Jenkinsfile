@@ -4,7 +4,7 @@ pipeline {
         maven "Maven-3.9"
     }
     environment{
-        aws_repo=339712792713.dkr.ecr.us-east-1.amazonaws.com/java-maven
+        aws_repo="339712792713.dkr.ecr.us-east-1.amazonaws.com/java-maven"
     }
 
     stages {
