@@ -45,10 +45,10 @@ pipeline {
                     TR_VAR_env_prefix = 'test'
             }
             steps {
-                dir("terraform"){
+                dir('terraform') {
                     sh "terraform init"
                     sh "terraform apply --auto-approve"
-                    env.EC2_PUBLIC_IP = sh(
+                    EC2_PUBLIC_IP = sh(
                         script: "terraform output ec2-pub-ip",
                         returnStdout: true
                     ).trim()
