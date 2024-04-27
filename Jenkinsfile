@@ -38,14 +38,32 @@ pipeline {
                 }
             }
         }
+        stage("provision sever") {
+            environment {
+                    AWS_ACCESS_KEY_ID = credentials{"aws_access_id"}
+                    AWS_SECRET_ACCESS_KEY = credentials{"aws_secert_access_key"}
+                    TR_VAR_env_prefix = 'test'
+            }
+            steps {
+                dir("terraform"){
+                    sh "terraform init"
+                    sh "terraform apply --auto-approve"
+                    EC2_PUBLIC_IP = sh(
+                        script: "terraform output ec2-pub-ip"
+                        returnStout: true
+                    ).trim()
+                }
+            }
+        }
         stage("deploy") {
             steps {
                 script {
+                    sleep(time: 90, unit: "SECONDS")
                     def shellcmd="bash ./docker-cmd.sh abanobmorkos10/java-maven:${IMAGE_NAME}"
-                    def ec2="ec2-user@34.227.28.46"
+                    def ec2="ec2-user@${EC2_PUBLIC_IP}"
                     sshagent(['ec2-key']) {
-                        sh "scp docker-cmd.sh ${ec2}:~"
-                        sh "scp docker-compose.yaml ${ec2}:~"
+                        sh "scp -o StrictHostKeyChecking=no docker-cmd.sh ${ec2}:~"
+                        sh "scp -o StrictHostKeyChecking=no docker-compose.yaml ${ec2}:~"
                         sh "ssh -o StrictHostKeyChecking=no ${ec2} ${shellcmd}"
                     }
                 }
