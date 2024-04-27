@@ -49,11 +49,10 @@ pipeline {
                     sh "terraform init"
                     sh "terraform apply --auto-approve"
                     def ec2PublicIp = sh(script: "terraform output ec2-pub-ip", returnStdout: true).trim()
-                    EC2_PUBLIC_IP = defineShortcut(ec2PublicIp)
+                    env.EC2_PUBLIC_IP = ec2PublicIp
                 }
             }
         }
-    }
         stage("deploy") {
             steps {
                 script {
@@ -68,16 +67,14 @@ pipeline {
                 }
             }
         }
-        stage("commit to github"){
-            steps{
-                script{
+        stage("commit to github") {
+            steps {
+                script {
                     withCredentials([usernamePassword(credentialsId: 'GitCREADINTIALS1', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh 'git config --global user.name "jenkins"'
                         sh 'git config --global user.email "jenkins@example.com"'
-
                         sh "git status"
                         sh "git branch"
-
                         sh "git remote set-url origin https://${USER}:${PASS}@github.com/abanobmorkosgad/Jenkins.git"
                         sh "git add ."
                         sh "git commit -m 'ci: update pom and jar'"
