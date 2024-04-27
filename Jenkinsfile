@@ -40,8 +40,8 @@ pipeline {
         }
         stage("provision sever") {
             environment {
-                    AWS_ACCESS_KEY_ID = credentials{"aws_access_id"}
-                    AWS_SECRET_ACCESS_KEY = credentials{"aws_secert_access_key"}
+                    AWS_ACCESS_KEY_ID = credentials("aws_access_id")
+                    AWS_SECRET_ACCESS_KEY = credentials("aws_secert_access_key")
                     TR_VAR_env_prefix = 'test'
             }
             steps {
@@ -49,7 +49,7 @@ pipeline {
                     sh "terraform init"
                     sh "terraform apply --auto-approve"
                     EC2_PUBLIC_IP = sh(
-                        script: "terraform output ec2-pub-ip"
+                        script: "terraform output ec2-pub-ip",
                         returnStdout: true
                     ).trim()
                 }
