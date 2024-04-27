@@ -52,6 +52,7 @@ pipeline {
                         script: "terraform output ec2-pub-ip",
                         returnStdout: true
                     ).trim()
+                    env.EC2_PUBLIC_IP = EC2_PUBLIC_IP
                 }
             }
         }
